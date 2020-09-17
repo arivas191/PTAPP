@@ -11,17 +11,17 @@ Then do:
 
 Now, download all the external libraries the program uses:
 
-`pip3 install flask-wtf\n`
-`pip3 install flask-sqlalchemy\n`
-`pip3 install flask-bcrypt`\n
-`pip3 install flask-login`\n
+`pip3 install flask-wtf`<br/>
+`pip3 install flask-sqlalchemy`<br/>
+`pip3 install flask-bcrypt`<br/>
+`pip3 install flask-login`
 
 You will need to create the DB file locally since it will not be included in the repository. Run the following commands to create it:
 
-`python3`\n
-`from flaskapp import db`\n
-`from flaskapp.models import User`\n
-`db.create_all()`\n
+`python3`<br/>
+`from flaskapp import db`<br/>
+`from flaskapp.models import User`<br/>
+`db.create_all()`
 
 You can now query the DB to verify it was created properly (you should also see a site.db file created inside the flaskapp directory):
 
