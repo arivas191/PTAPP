@@ -9,6 +9,13 @@ Then do:
 
 `export FLASK_APP=run.py`
 
+Now, download all the external libraries the program uses:
+
+`pip3 install flask-wtf`
+`pip3 install flask-sqlalchemy`
+`pip3 install flask-bcrypt`
+`pip3 install flask-login`
+
 You will need to create the DB file locally since it will not be included in the repository. Run the following commands to create it:
 
 `python3`
