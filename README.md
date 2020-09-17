@@ -7,7 +7,7 @@ First, you need to have python and pip installed. I already had them installed f
 
 Then do:
 
-`export FLASK_APP=app.py`
+`export FLASK_APP=run.py`
 
 Now, you can it in two ways (inside the project directory):
 
@@ -15,7 +15,7 @@ Now, you can it in two ways (inside the project directory):
 
 Or:
 
-`python3 app.py`
+`python3 run.py`
 
 I'm using the second option since this one has the Debug option turned on and you can just refresh the page when you make a code change, so you don't have to re-run Flask.
 
