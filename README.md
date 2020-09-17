@@ -11,8 +11,8 @@ Then do:
 
 Now, download all the external libraries the program uses:
 
-`pip3 install flask-wtf`\n
-`pip3 install flask-sqlalchemy`\n
+`pip3 install flask-wtf\n`
+`pip3 install flask-sqlalchemy\n`
 `pip3 install flask-bcrypt`\n
 `pip3 install flask-login`\n
 
