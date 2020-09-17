@@ -9,6 +9,19 @@ Then do:
 
 `export FLASK_APP=run.py`
 
+You will need to create the DB file locally since it will not be included in the repository. Run the following commands to create it:
+
+`python3`
+`from flaskapp import db`
+`from flaskapp.models import User`
+`db.create_all()`
+
+You can now query the DB to verify it was created properly (you should also see a site.db file created inside the flaskapp directory):
+
+`User.query.all()`
+
+And that should return an empty object [].
+
 Now, you can it in two ways (inside the project directory):
 
 `flask run`
