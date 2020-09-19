@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 from flaskapp.models import User
 
@@ -20,5 +20,15 @@ class LoginForm(FlaskForm):
     username = StringField('Username',
                         validators=[DataRequired(), Length(min=3, max=30)])
     password = PasswordField('Password', validators=[DataRequired()])
-    remember = BooleanField('Remember Me')
     submit = SubmitField('Log In')
+
+class ConditionsForm(FlaskForm):
+    pain_areas = SelectField('Pain in Areas', validators=[DataRequired()],
+                            choices=[('Choice 1'), ('Choice 2')])
+    ability = SelectField('Exercise Ability', validators=[DataRequired()],
+                            choices=[('beginner', 'Beginner'),
+                                    ('intermediate', 'Intermediate'),
+                                    ('advanced', 'Advanced')])
+    challenges = SelectField('Challenges', validators=[DataRequired()],
+                            choices=[('Choice 1'), ('Choice 2')])
+    submit = SubmitField('Submit')

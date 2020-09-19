@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect
 from flaskapp import app, db, bcrypt
-from flaskapp.forms import RegistrationForm, LoginForm
-from flaskapp.models import User
+from flaskapp.forms import RegistrationForm, LoginForm, ConditionsForm
+from flaskapp.models import User, Conditions
 from flask_login import login_user, current_user, logout_user, login_required
 
 #endpoint for the home page
@@ -19,8 +19,6 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
             return redirect(url_for('conditions'))
-            #next_page = request.args.get('next')
-            #return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
             flash('Username or password is incorrect.', 'danger')
     return render_template('login.html', form=form)
@@ -47,4 +45,16 @@ def logout():
 @app.route('/conditions', methods=['GET', 'POST'])
 @login_required
 def conditions():
-    return render_template('conditions.html')
+    form = ConditionsForm()
+    if form.validate_on_submit():
+        conditions = Conditions(pain_areas=form.pain_areas.data, ability=form.ability.data,
+                                challenges=form.challenges.data, user_id=current_user.get_id())
+        db.session.add(conditions)
+        db.session.commit()
+        return redirect(url_for('areas'))
+    return render_template('conditions.html', form=form)
+
+@app.route('/areas', methods=['GET', 'POST'])
+@login_required
+def areas():
+    return render_template('areas.html')

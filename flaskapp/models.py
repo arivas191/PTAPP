@@ -11,4 +11,14 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
 
     def __repr__(self):
-        return f"User('{self.username}')"
+        return f"User('{self.id}', '{self.username}')"
+
+class Conditions(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    pain_areas = db.Column(db.String(60), nullable=False)
+    ability = db.Column(db.String(60), nullable=False)
+    challenges = db.Column(db.String(60), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f"Conditions('{self.pain_areas}', '{self.ability}', '{self.challenges}', '{self.user_id}')"
