@@ -20,7 +20,7 @@ You will need to create the DB file locally since it will not be included in the
 
 `python3`<br/>
 `from flaskapp import db`<br/>
-`from flaskapp.models import User`<br/>
+`from flaskapp.models import *`<br/>
 `db.create_all()`
 
 You can now query the DB to verify it was created properly (you should also see a site.db file created inside the flaskapp directory):
