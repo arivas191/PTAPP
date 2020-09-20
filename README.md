@@ -9,6 +9,26 @@ Then do:
 
 `export FLASK_APP=run.py`
 
+Now, download all the external libraries the program uses:
+
+`pip3 install flask-wtf`<br/>
+`pip3 install flask-sqlalchemy`<br/>
+`pip3 install flask-bcrypt`<br/>
+`pip3 install flask-login`
+
+You will need to create the DB file locally since it will not be included in the repository. Run the following commands to create it:
+
+`python3`<br/>
+`from flaskapp import db`<br/>
+`from flaskapp.models import User`<br/>
+`db.create_all()`
+
+You can now query the DB to verify it was created properly (you should also see a site.db file created inside the flaskapp directory):
+
+`User.query.all()`
+
+And that should return an empty object [].
+
 Now, you can it in two ways (inside the project directory):
 
 `flask run`

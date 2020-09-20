@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
-from flaskapp.models import User
+from flaskapp.models import *
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username',
@@ -20,5 +20,13 @@ class LoginForm(FlaskForm):
     username = StringField('Username',
                         validators=[DataRequired(), Length(min=3, max=30)])
     password = PasswordField('Password', validators=[DataRequired()])
-    remember = BooleanField('Remember Me')
     submit = SubmitField('Log In')
+
+class ConditionsForm(FlaskForm):
+    challenges = SelectField('Area', validators=[DataRequired()],
+                            choices=[(choice.name, choice.value) for choice in BodyPart])
+    goals = SelectField('Goal', validators=[DataRequired()],
+                            choices=[(choice.name, choice.value) for choice in Goal])
+    level = SelectField('Exercise Ability', validators=[DataRequired()],
+                            choices=[(choice.name, choice.value) for choice in Level])
+    submit = SubmitField('Submit')

@@ -7,8 +7,58 @@
     <title>Conditions</title>
   </head>
   <body>
-    <div class="container" id="welcome">
-      <h2 class="display-4">Hi, {{ current_user.username }}</h2>
+    <div class="container">
+      <div class="content-section">
+        <form method="POST" action="">
+          {{ form.hidden_tag() }}
+          <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Choose Your Conditions</legend>
+            <div class="form-group">
+              {{ form.challenges.label(class="form-control-label") }}
+              {% if form.challenges.errors %}
+                {{ form.challenges(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                    {% for error in form.challenges.errors %}
+                      <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+              {% else %}
+                {{ form.challenges(class="form-control form-control-lg") }}
+              {% endif %}
+            </div>
+            <div class="form-group">
+              {{ form.goals.label(class="form-control-label") }}
+
+              {% if form.goals.errors %}
+                {{ form.goals(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                  {% for error in form.goals.errors %}
+                    <span>{{ error }}</span>
+                  {% endfor %}
+                </div>
+              {% else %}
+                  {{ form.goals(class="form-control form-control-lg") }}
+              {% endif %}
+            </div>
+            <div class="form-group">
+              {{ form.level.label(class="form-control-label") }}
+              {% if form.level.errors %}
+                {{ form.level(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                    {% for error in form.level.errors %}
+                      <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+              {% else %}
+                {{ form.level(class="form-control form-control-lg") }}
+              {% endif %}
+            </div>
+          </fieldset>
+          <div class="form-group">
+              {{ form.submit(class="btn btn-outline-info") }}
+          </div>
+        </form>
+      </div>
     </div>
   </body>
 </html>
