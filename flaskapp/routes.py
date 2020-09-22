@@ -51,10 +51,16 @@ def conditions():
                                 body_part=form.challenges.data, user_id=current_user.get_id())
         db.session.add(conditions)
         db.session.commit()
-        return redirect(url_for('areas'))
+        return redirect(url_for('pickexercise'))
     return render_template('conditions.html', form=form)
 
-@app.route('/areas', methods=['GET', 'POST'])
+@app.route('/pickexercise', methods=['GET', 'POST'])
 @login_required
-def areas():
-    return render_template('areas.html')
+def pickexercise():
+    if current_user.is_authenticated:
+        user_id = current_user.get_id()
+        challenge = Challenge.query.filter_by(user_id=user_id).first()
+        print(challenge.body_part)
+        print(challenge.goal)
+        print(challenge.level)
+    return render_template('pickexercise.html')
