@@ -11,8 +11,6 @@ def load_user(user_id):
 
 class BodyPart(enum.Enum):
     Arm = 'Arm'
-    Leg = 'leg'
-    Hand = 'Hand'
     Ankle = 'Ankle'
     Shoulder = 'Shoulder'
     Hips = 'Hips'
@@ -46,8 +44,8 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    # age = db.Column(db.Integer)
-    challenges = db.relationship('Challenge', backref='user', lazy='dynamic')
+    challenges = db.relationship('Challenge', backref='User', lazy='dynamic')
+    movements = db.relationship('Movement', backref='User', lazy='dynamic')
 
     def __repr__(self):
         return f"User('{self.id}', '{self.username}')"
@@ -58,30 +56,31 @@ class Challenge(db.Model):
     body_part = db.Column(Enum(BodyPart), nullable=False)
     goal =  db.Column(Enum(Goal), nullable=False)
     level = db.Column(Enum(Level), nullable=False)
-    exercises = db.relationship('Exercise', backref='purpose', lazy='dynamic')
 
     def __repr__(self):
         return f"Challenge('{self.body_part}')"
 
 class Exercise(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    challenge_id = db.Column(db.Integer, db.ForeignKey('challenge.id'), nullable=False)
     description = db.Column(db.String(50), unique=True, nullable=False)
     title = db.Column(db.String(20), unique=True, nullable=False)
     exercise_image = image_attachment('ExerciseImage')
     learn_more_body = db.Column(db.String(160), unique=True, nullable=False)
-    movements = db.relationship('Movement', backref='exercise', lazy='dynamic')
+    body_part = db.Column(Enum(BodyPart), nullable=False)
+    movements = db.relationship('Movement', backref='Exercise', lazy='dynamic')
 
     def __repr__(self):
         return f"Exercise('{self.title}')"
 
 class Movement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    exercise_id = db.Column(db.Integer, db.ForeignKey('exercise.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    exercise_id = db.Column(db.Integer, db.ForeignKey('exercise.id'), nullable=False)
     repetitions_num = db.Column(db.Integer, nullable=False)
     max_distance = db.Column(db.Integer, nullable=False)
     max_force = db.Column(db.Integer, nullable=False)
     steadiness = db.Column(Enum(Steadiness), nullable=False)
+    feedback = db.relationship('Feedback', backref='Movement', lazy='dynamic')
 
     def __repr__(self):
         return f"Movement('{self.exercise.title}')"
