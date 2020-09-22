@@ -30,3 +30,5 @@ class ConditionsForm(FlaskForm):
     level = SelectField('Exercise Ability', validators=[DataRequired()],
                             choices=[(choice.name, choice.value) for choice in Level])
     submit = SubmitField('Submit')
+
+
