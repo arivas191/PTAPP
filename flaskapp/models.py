@@ -65,7 +65,7 @@ class Exercise(db.Model):
     description = db.Column(db.String(50), unique=True, nullable=False)
     title = db.Column(db.String(20), unique=True, nullable=False)
     exercise_image = image_attachment('ExerciseImage')
-    learn_more_body = db.Column(db.String(160), unique=True, nullable=False)
+    learn_more_body = db.Column(db.String(160), unique=True)
     body_part = db.Column(Enum(BodyPart), nullable=False)
     movements = db.relationship('Movement', backref='Exercise', lazy='dynamic')
 
