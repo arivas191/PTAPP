@@ -15,7 +15,8 @@ Now, download all the external libraries the program uses:
 `pip3 install flask-sqlalchemy`<br/>
 `pip3 install flask-bcrypt`<br/>
 `pip3 install flask-login`<br/>
-`pip3 install SQLAlchemy-ImageAttach`
+`pip3 install SQLAlchemy-ImageAttach`<br/>
+`pip3 install Flask-Seeder`
 
 You will need to create the DB file locally since it will not be included in the repository. Run the following commands to create it:
 
