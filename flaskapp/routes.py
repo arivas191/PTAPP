@@ -54,6 +54,7 @@ def conditions():
         return redirect(url_for('pickexercise'))
     return render_template('conditions.html', form=form)
 
+#endpoint for the exercises page
 @app.route('/pickexercise', methods=['GET', 'POST'])
 @login_required
 def pickexercise():

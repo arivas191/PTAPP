@@ -62,15 +62,23 @@ class Challenge(db.Model):
 
 class Exercise(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(50), unique=True, nullable=False)
-    title = db.Column(db.String(20), unique=True, nullable=False)
-    exercise_image = image_attachment('ExerciseImage')
-    learn_more_body = db.Column(db.String(160), unique=True)
+    description = db.Column(db.String(1055), unique=True, nullable=False)
+    title = db.Column(db.String(40), unique=True, nullable=False)
+    exercise_image = db.relationship('ExerciseImage', lazy='dynamic')
+    learn_more_body = db.Column(db.String(160), unique=True, nullable=True)
     body_part = db.Column(Enum(BodyPart), nullable=False)
     movements = db.relationship('Movement', backref='Exercise', lazy='dynamic')
 
     def __repr__(self):
         return f"Exercise('{self.title}')"
+
+    def __init__(self, id, description, title, body_part, learn_more_body=None):
+        self.id = id
+        self.description = description
+        self.title = title
+        self.body_part = body_part
+        if learn_more_body:
+            self.learn_more_body = learn_more_body
 
 class Movement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
