@@ -45,23 +45,23 @@ def logout():
 @app.route('/conditions', methods=['GET', 'POST'])
 @login_required
 def conditions():
-    form = ConditionsForm()
-    if form.validate_on_submit():
-        conditions = Challenge(goal=form.goals.data, level=form.level.data,
-                                body_part=form.challenges.data, user_id=current_user.get_id())
-        db.session.add(conditions)
-        db.session.commit()
-        return redirect(url_for('pickexercise'))
+    if current_user.is_authenticated:
+        form = ConditionsForm()
+        if form.validate_on_submit():
+            conditions = Challenge(goal=form.goals.data, level=form.level.data,
+                                    body_part=form.challenges.data, user_id=current_user.get_id())
+            db.session.add(conditions)
+            db.session.commit()
+            return redirect(url_for('pickexercise'))
     return render_template('conditions.html', form=form)
 
 #endpoint for the exercises page
 @app.route('/pickexercise', methods=['GET', 'POST'])
 @login_required
 def pickexercise():
-    if current_user.is_authenticated:
-        user_id = current_user.get_id()
-        challenge = Challenge.query.filter_by(user_id=user_id).first()
-        print(challenge.body_part)
-        print(challenge.goal)
-        print(challenge.level)
-    return render_template('pickexercise.html')
+    if current_user.is_authenticated and current_user.challenges:
+        challenges = current_user.challenges
+        exercises = []
+        for challenge in challenges:
+            exercises.append(Exercise.query.filter_by(body_part=challenge.body_part).first())
+    return render_template('pickexercise.html', exercises=exercises)

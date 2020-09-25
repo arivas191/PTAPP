@@ -45,3 +45,10 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 3px;
   margin-bottom: 20px;
 }
+
+.exercise-content {
+  position: fixed;
+  top: 25%;
+  left: 25%;
+  margin-bottom: 20px;
+}
