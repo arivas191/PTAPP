@@ -65,3 +65,9 @@ def pickexercise():
         for challenge in challenges:
             exercises.append(Exercise.query.filter_by(body_part=challenge.body_part).first())
     return render_template('pickexercise.html', exercises=exercises)
+
+#endpoint for the user profile page
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    return render_template('profile.html')

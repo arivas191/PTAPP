@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="static/main.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Profile</title>
+  </head>
+  <body>
+    <div class="container" id="welcome">
+      <h2 class="display-4">Hi, {{ current_user.username }}</h2>
+      <a class="btn btn-outline-danger" href="{{ url_for('logout') }}">Log Out</a>
+    </div>
+  </body>
+</html>
