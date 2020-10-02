@@ -16,8 +16,13 @@
     }
   </style>
   <body>
+    <ul>
+      <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+      <li><a href="{{ url_for('profile') }}">Profile</a></li>
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+    </ul>
     <div class="container">
-      <h2>Choose An Exercise</h2>  
+      <h2>Choose An Exercise</h2>
         <div class="exercise-content">
           <div class="row">
             {% for exercise in exercises %}
