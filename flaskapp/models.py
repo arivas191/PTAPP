@@ -3,7 +3,6 @@ from flask_login import UserMixin
 from sqlalchemy import Integer, Enum, Unicode
 import enum
 from sqlalchemy.orm import relationship
-from sqlalchemy_imageattach.entity import Image, image_attachment
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -26,12 +25,6 @@ class Goal(enum.Enum):
     Strength = 'Strength'
     Endurance = 'Endurance'
     PainRelief = 'Pain relief'
-
-class ExerciseImage(db.Model, Image):
-    """Exerise image model"""
-
-    exercise_id = db.Column(db.Integer, db.ForeignKey('exercise.id'), primary_key=True)
-    exercise = db.relationship('Exercise')
 
 class Steadiness(enum.Enum):
     VeryShaky = 'Very Shaky'
@@ -56,6 +49,7 @@ class Challenge(db.Model):
     body_part = db.Column(Enum(BodyPart), nullable=False)
     goal =  db.Column(Enum(Goal), nullable=False)
     level = db.Column(Enum(Level), nullable=False)
+    is_duplicate = db.Column(db.Boolean, nullable=False)
 
     def __repr__(self):
         return f"Challenge('{self.body_part}')"
@@ -64,7 +58,7 @@ class Exercise(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(1055), unique=True, nullable=False)
     title = db.Column(db.String(40), unique=True, nullable=False)
-    exercise_image = db.relationship('ExerciseImage', lazy='dynamic')
+    image_name = db.Column(db.String(40), nullable=False)
     learn_more_body = db.Column(db.String(160), unique=True, nullable=True)
     body_part = db.Column(Enum(BodyPart), nullable=False)
     movements = db.relationship('Movement', backref='Exercise', lazy='dynamic')
@@ -72,11 +66,12 @@ class Exercise(db.Model):
     def __repr__(self):
         return f"Exercise('{self.title}')"
 
-    def __init__(self, id, description, title, body_part, learn_more_body=None):
+    def __init__(self, id, description, title, body_part, image_name, learn_more_body=None):
         self.id = id
         self.description = description
         self.title = title
         self.body_part = body_part
+        self.image_name = image_name
         if learn_more_body:
             self.learn_more_body = learn_more_body
 

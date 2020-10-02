@@ -18,7 +18,10 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
-            return redirect(url_for('conditions'))
+            if user.challenges.count():
+                return redirect(url_for('pickexercise'))
+            else:
+                return redirect(url_for('conditions'))
         else:
             flash('Username or password is incorrect.', 'danger')
     return render_template('login.html', form=form)
@@ -48,11 +51,22 @@ def conditions():
     if current_user.is_authenticated:
         form = ConditionsForm()
         if form.validate_on_submit():
-            conditions = Challenge(goal=form.goals.data, level=form.level.data,
-                                    body_part=form.challenges.data, user_id=current_user.get_id())
-            db.session.add(conditions)
-            db.session.commit()
-            return redirect(url_for('pickexercise'))
+            if current_user.challenges.count() < 2:
+                user_condition = current_user.challenges.first()
+                is_duplicate=False
+                if user_condition is not None: 
+                    if form.challenges.data == user_condition.body_part.value:
+                        is_duplicate=True
+                if is_duplicate:
+                    user_condition.is_duplicate = True
+                    db.session.commit()
+                condition = Challenge(goal=form.goals.data, level=form.level.data,
+                                        body_part=form.challenges.data, user_id=current_user.get_id(), is_duplicate=is_duplicate)
+                db.session.add(condition)
+                db.session.commit()
+                return redirect(url_for('pickexercise'))
+            else:
+                flash('You can only specify up to two conditions.', 'danger')
     return render_template('conditions.html', form=form)
 
 #endpoint for the exercises page
@@ -63,7 +77,11 @@ def pickexercise():
         challenges = current_user.challenges
         exercises = []
         for challenge in challenges:
-            exercises.append(Exercise.query.filter_by(body_part=challenge.body_part).first())
+            exercise = Exercise.query.filter_by(body_part=challenge.body_part).first()
+            if challenge.is_duplicate and exercises:
+                break
+            else:
+                exercises.append(exercise)
     return render_template('pickexercise.html', exercises=exercises)
 
 #endpoint for the user profile page
