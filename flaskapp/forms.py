@@ -32,3 +32,5 @@ class ConditionsForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
+
+
