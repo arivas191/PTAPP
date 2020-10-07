@@ -33,6 +33,7 @@
                   <h3>{{ exercise.title }}</h3>
                   <img src="{{url_for('static', filename=exercise.image_name)}}", title={{exercise.title}}/>
                   <h5>{{ exercise.description }}</h5>
+                  <a type="button" class="btn btn-outline-success" href="/movement/{{exercise.id}}">Start Workout</a>
                 </div>
               {% endfor %}
             </div>

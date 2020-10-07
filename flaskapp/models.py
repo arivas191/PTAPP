@@ -79,14 +79,14 @@ class Movement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     exercise_id = db.Column(db.Integer, db.ForeignKey('exercise.id'), nullable=False)
-    repetitions_num = db.Column(db.Integer, nullable=False)
-    max_distance = db.Column(db.Integer, nullable=False)
-    max_force = db.Column(db.Integer, nullable=False)
-    steadiness = db.Column(Enum(Steadiness), nullable=False)
+    repetitions_num = db.Column(db.Integer)
+    max_distance = db.Column(db.Integer)
+    max_force = db.Column(db.Integer)
+    steadiness = db.Column(Enum(Steadiness))
     feedback = db.relationship('Feedback', backref='Movement', lazy='dynamic')
 
     def __repr__(self):
-        return f"Movement('{self.exercise.title}')"
+        return f"Movement('{self.user_id}')"
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)

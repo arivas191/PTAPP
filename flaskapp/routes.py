@@ -102,3 +102,28 @@ def profile():
             return render_template('profile.html', level=challenge.level.name, goal=challenge.goal.name, body_part=challenge.body_part, form=form)
         # return render_template('conditions.html', form=form)
         return render_template('profile.html', form=form)
+
+#endpoint for the movement page
+@app.route('/movement/<exercise>')
+@login_required
+def movement(exercise):
+    if current_user.is_authenticated:
+        movement = Movement(exercise_id=exercise, user_id=current_user.get_id())
+        db.session.add(movement)
+        db.session.commit()
+    return render_template('movement.html')
+# short-term, "start", create the movement, spinny graphic, stop button, 
+# long-term user clicks "Start" -> create movement in db, collect the user data, analyze with the calculate api show user a spinny bar "working out..."  add a stop button. When stop is clicked calculate wraps up, updates the movement object, creates a feedback entry and calls feeedback api
+
+
+#endpoint for the feedback page 
+@app.route('/feedback', methods=['GET', 'POST'])
+@login_required
+def feedback():
+    # if request.method == 'GET':
+        # user is viewing a past feedback
+    # elif request.method == 'POST':
+        # feedback is in-progress
+        # create the feedback
+        # call the AI API
+    return render_template('feedback.html')
