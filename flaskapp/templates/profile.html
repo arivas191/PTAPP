@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="static/main.css" rel="stylesheet">
     <meta charset="utf-8">
@@ -10,13 +11,16 @@
     <ul>
       <li><a href="{{ url_for('logout') }}">Log Out</a></li>
       <li><a href="{{ url_for('profile') }}">Profile</a></li>
+      <li><a href="{{ url_for('pickexercise') }}">Exercises</a></li>
       <li><a href="{{ url_for('home') }}">Home</a></li>
     </ul>
-    <div class="container mt-5" id="welcome">
-      <h2 class="display-4">Hi, {{ current_user.username }}</h2>
-      <h4 class ="display-5">Update your Information Below</h4>
-
-          <form method="POST" action="">
+    <div class="container mt-5">
+      <div id="profile">
+        <h2 class="display-4">Hi, {{ current_user.username }}</h2>
+        <button type="button" id="show" class="btn btn-outline-primary">Update Conditions</button>
+      </div>
+      <div class="content-section" style="top:0%; display: none;">
+          <form method="POST" action="{{ url_for('conditions') }}">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
               <legend class="border-bottom mb-4">Choose Your Conditions</legend>
@@ -35,7 +39,7 @@
               </div>
               <div class="form-group">
                 {{ form.goals.label(class="form-control-label") }}
-  
+
                 {% if form.goals.errors %}
                   {{ form.goals(class="form-control form-control-lg is-invalid") }}
                   <div class="invalid-feedback">
@@ -66,12 +70,16 @@
             </div>
             <p>You can specify up to two conditions.</p>
           </form>
-
+        </div>
     </div>
   <script>
     document.getElementById("challenges").value ="{{body_part.name}}"
     document.getElementById("goals").value ="{{goal}}"
     document.getElementById("level").value ="{{level}}"
-    </script>
+
+    $('#show').click(function () {
+      $('.content-section').fadeIn('2000');
+    })
+  </script>
   </body>
 </html>

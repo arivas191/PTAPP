@@ -52,7 +52,7 @@ class Challenge(db.Model):
     is_duplicate = db.Column(db.Boolean, nullable=False)
 
     def __repr__(self):
-        return f"Challenge('{self.body_part}')"
+        return f"Challenge('{self.id}', '{self.body_part}', '{self.goal}', '{self.level}')"
 
 class Exercise(db.Model):
     id = db.Column(db.Integer, primary_key=True)
