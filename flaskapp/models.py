@@ -38,8 +38,8 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    challenges = db.relationship('Challenge', backref='User', lazy='dynamic')
-    movements = db.relationship('Movement', backref='User', lazy='dynamic')
+    challenges = db.relationship('Challenge', backref='user')
+    movements = db.relationship('Movement', backref='user')
 
     def __repr__(self):
         return f"User('{self.id}', '{self.username}')"
@@ -63,7 +63,7 @@ class Exercise(db.Model):
     learn_more_body = db.Column(db.String(160), unique=True, nullable=True)
     body_part = db.Column(Enum(BodyPart), nullable=False)
     demo_link = db.Column(db.String, nullable=False)
-    movements = db.relationship('Movement', backref='Exercise', lazy='dynamic')
+    movements = db.relationship('Movement', backref='exercise')
 
     def __repr__(self):
         return f"Exercise('{self.title}')"
@@ -87,13 +87,13 @@ class Movement(db.Model):
     max_distance = db.Column(db.Integer)
     max_force = db.Column(db.Integer)
     steadiness = db.Column(Enum(Steadiness))
-    feedback = db.relationship('Feedback', backref='Movement', lazy='dynamic')
+    feedback = db.relationship('Feedback', uselist=False, backref='movement')
 
     def __repr__(self):
         return f"Movement('{self.user_id}', '{self.Exercise.title}')"
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    movement_id = db.Column(db.Integer, db.ForeignKey('movement.id'))
+    movement_id = db.Column(db.Integer, db.ForeignKey('movement.id'), nullable=False)
     statement = db.Column(db.String(80))
     score = db.Column(db.Integer)

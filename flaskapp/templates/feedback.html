@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="static/main.css" rel="stylesheet">
     <meta charset="utf-8">
-    <title>Workout Feedback</title>
+    <title>Workout Summary</title>
   </head>
   <body>
     <ul>
@@ -20,8 +20,9 @@
         <img src="{{url_for('static', filename=exercise.image_name)}}", title={{exercise.title}}/>
       </a>
       <h5>{{ exercise.description }}</h5>
-      <h3>{{ feedback.score }} - Great Job!</h3>
-      <h4>{{ feedback.statement }}</h4>
+      <h4>Completed At: {{movement.created_at}}</h4>
+      <!-- <h3>{{ feedback.score }} - Great Job!</h3>
+      <h4>{{ feedback.statement }}</h4> -->
     </div>
   </body>
 </html>
