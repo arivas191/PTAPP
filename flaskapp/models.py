@@ -61,17 +61,19 @@ class Exercise(db.Model):
     image_name = db.Column(db.String(40), nullable=False)
     learn_more_body = db.Column(db.String(160), unique=True, nullable=True)
     body_part = db.Column(Enum(BodyPart), nullable=False)
+    demo_link = db.Column(db.String, nullable=False)
     movements = db.relationship('Movement', backref='Exercise', lazy='dynamic')
 
     def __repr__(self):
         return f"Exercise('{self.title}')"
 
-    def __init__(self, id, description, title, body_part, image_name, learn_more_body=None):
+    def __init__(self, id, description, title, body_part, image_name, demo_link, learn_more_body=None):
         self.id = id
         self.description = description
         self.title = title
         self.body_part = body_part
         self.image_name = image_name
+        self.demo_link = demo_link
         if learn_more_body:
             self.learn_more_body = learn_more_body
 
