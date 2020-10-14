@@ -1,6 +1,7 @@
 from flaskapp import db, login_manager
+import datetime
 from flask_login import UserMixin
-from sqlalchemy import Integer, Enum, Unicode
+from sqlalchemy import Integer, Enum, Unicode, DateTime
 import enum
 from sqlalchemy.orm import relationship
 
@@ -80,6 +81,7 @@ class Exercise(db.Model):
 class Movement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     exercise_id = db.Column(db.Integer, db.ForeignKey('exercise.id'), nullable=False)
     repetitions_num = db.Column(db.Integer)
     max_distance = db.Column(db.Integer)
@@ -88,11 +90,10 @@ class Movement(db.Model):
     feedback = db.relationship('Feedback', backref='Movement', lazy='dynamic')
 
     def __repr__(self):
-        return f"Movement('{self.user_id}')"
+        return f"Movement('{self.user_id}', '{self.Exercise.title}')"
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     movement_id = db.Column(db.Integer, db.ForeignKey('movement.id'))
-    statement = db.Column(db.String(80), nullable=False)
-    score = db.Column(db.Integer, nullable=False)
-    delivered = db.Column(db.Boolean, nullable=False)
+    statement = db.Column(db.String(80))
+    score = db.Column(db.Integer)

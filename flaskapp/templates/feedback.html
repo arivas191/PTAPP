@@ -13,7 +13,15 @@
       <li><a href="{{ url_for('home') }}">Home</a></li>
     </ul>
     <div class="container">
-      <h2>Workout Feedback</h2>
+      <h2>Workout Summary</h2>
+      <h3>For Exercise: </h3> 
+      <a type="button" href="{{exercise.demo_link}}" target="_blank">
+        <h3>{{ exercise.title }}</h3>
+        <img src="{{url_for('static', filename=exercise.image_name)}}", title={{exercise.title}}/>
+      </a>
+      <h5>{{ exercise.description }}</h5>
+      <h3>{{ feedback.score }} - Great Job!</h3>
+      <h4>{{ feedback.statement }}</h4>
     </div>
   </body>
 </html>
