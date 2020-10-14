@@ -18,6 +18,7 @@
     <ul>
       <li><a href="{{ url_for('logout') }}">Log Out</a></li>
       <li><a href="{{ url_for('profile') }}">Profile</a></li>
+      <li><a href="{{ url_for('pickexercise') }}">Exercises</a></li>
       <li><a href="{{ url_for('home') }}">Home</a></li>
     </ul>
     <div class="container">
@@ -25,17 +26,18 @@
         <h2>Specify a condition to receive exercise recommendations!</h2>
         <a type="button" class="btn btn-outline-success" href="{{ url_for('conditions') }}">Conditions</a>
       {% else %}
-        <h2>Choose An Exercise</h2>
+        <h2 id="exerciseTitle">Choose An Exercise</h2>
           <div class="exercise-content">
             <div class="row">
               {% for exercise in exercises %}
-                <div class="col-6 text-left">
+                <div class="col-8 text-center">
                   <a type="button" href="{{exercise.demo_link}}" target="_blank">
                     <h3>{{ exercise.title }}</h3>
                     <img src="{{url_for('static', filename=exercise.image_name)}}", title={{exercise.title}}/>
-                  </a>
+                  </a>a
                   <h5>{{ exercise.description }}</h5>
-                  <a type="button" class="btn btn-outline-success" href="/movement/{{exercise.id}}">Start Workout</a>
+                  <br></br>
+                  <a type="button" class="btn btn-outline-success btn-lg" href="/movement/{{exercise.id}}">Start Workout</a>
                 </div>
               {% endfor %}
             </div>
