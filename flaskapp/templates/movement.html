@@ -3,7 +3,7 @@
   <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-    <link href="static/main.css" rel="stylesheet">
+    <link href="../static/main.css" rel="stylesheet">
     <meta charset="utf-8">
     <title>Workout in Progress</title>
   </head>
@@ -11,16 +11,15 @@
     <ul>
       <li><a href="{{ url_for('logout') }}">Log Out</a></li>
       <li><a href="{{ url_for('profile') }}">Profile</a></li>
+      <li><a href="{{ url_for('pickexercise') }}">Exercises</a></li>
       <li><a href="{{ url_for('home') }}">Home</a></li>
     </ul>
-    <div class="container">
-      <h2>Workout in Progress</h2>
+    <div class="container"></br></br>
+      <h2 id="exerciseTitle">Workout in Progress</h2>
       <div id="loading">
         <img id="loading-image" src="{{url_for('static', filename='ajax-loader.gif')}}", alt="Doing Great ... " />
       </div>
-      <form method="POST" action="">
-        <input type="submit" class="btn btn-outline-success" value="Stop Workout"/>
-      </form>
+      <a type="button" class="btn btn-outline-success" href="/feedback/{{movement.id}}">Stop Workout</a>
     </div>
     <script>
       $(window).load(function() {
