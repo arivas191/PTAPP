@@ -18,12 +18,14 @@
       <div id="loading">
         <img id="loading-image" src="{{url_for('static', filename='ajax-loader.gif')}}", alt="Doing Great ... " />
       </div>
-      <a type="button" class="btn btn-outline-success" href="/feedback">Stop Workout</a>
+      <form method="POST" action="">
+        <input type="submit" class="btn btn-outline-success" value="Stop Workout"/>
+      </form>
     </div>
     <script>
       $(window).load(function() {
         $('#loading').show();
       });
-    </script>   
+    </script>
   </body>
 </html>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="static/main.css" rel="stylesheet">
     <meta charset="utf-8">
@@ -27,6 +28,15 @@
       {% else %}
         <h2>Choose An Exercise</h2>
           <div class="exercise-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
             <div class="row">
               {% for exercise in exercises %}
                 <div class="col-6 text-left">
@@ -44,4 +54,9 @@
       {% endif %}
     </div>
   </body>
+  <script>
+    setTimeout(function() {
+      $('.alert').fadeOut('slow');
+    }, 5000);
+  </script>
 </html>

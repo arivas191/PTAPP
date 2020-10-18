@@ -17,7 +17,8 @@
     <div class="container mt-5">
       <div id="profile">
         <h2 class="display-4">Hi, {{ current_user.username }}</h2>
-        <button type="button" id="show" class="btn btn-outline-primary">Update Conditions</button>
+        <button type="button" id="showConditions" class="btn btn-outline-primary">Update Conditions</button> <br>
+        <button type="button" id="showHistory" class="btn btn-outline-success">Workout History</button>
       </div>
       <div class="content-section" style="top:0%; display: none;">
           <form method="POST" action="{{ url_for('conditions') }}">
@@ -71,14 +72,36 @@
             <p>You can specify up to two conditions.</p>
           </form>
         </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Workouts you've completed:</h5>
+            {% if not history %}
+              You haven't completed any workouts!
+            {% else %}
+              {% for h in history %}
+              <div class="row">
+                <div class="col" style="padding-left: 0px;">
+                  {{ h.Exercise.title }}
+                </div>
+                <div class="col">
+                  {{ h.time_stamp.strftime("%c") }}
+                </div>
+              </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
     </div>
   <script>
-    document.getElementById("challenges").value ="{{body_part.name}}"
-    document.getElementById("goals").value ="{{goal}}"
-    document.getElementById("level").value ="{{level}}"
+    document.getElementById("challenges").value ="{{challenge.body_part.name}}"
+    document.getElementById("goals").value ="{{challenge.goal.name}}"
+    document.getElementById("level").value ="{{challenge.level.name}}"
 
-    $('#show').click(function () {
-      $('.content-section').fadeIn('2000');
+    $('#showConditions').click(function () {
+      $('.content-section').toggle('2000');
+    })
+    $('#showHistory').click(function () {
+      $('.card').toggle('2000');
     })
   </script>
   </body>

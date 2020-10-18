@@ -77,6 +77,15 @@ class Exercise(db.Model):
         if learn_more_body:
             self.learn_more_body = learn_more_body
 
+class History(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    exercise_id = db.Column(db.Integer, db.ForeignKey('exercise.id'), nullable=False)
+    time_stamp = db.Column(db.DateTime, nullable=False)
+
+    def __repr__(self):
+        return f"History('{self.user_id}', '{self.exercise_id}', '{self.time_stamp}')"
+
 class Movement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

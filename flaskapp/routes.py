@@ -3,6 +3,7 @@ from flaskapp import app, db, bcrypt
 from flaskapp.forms import RegistrationForm, LoginForm, ConditionsForm
 from flaskapp.models import *
 from flask_login import login_user, current_user, logout_user, login_required
+import datetime
 
 #endpoint for the home page
 @app.route('/')
@@ -51,28 +52,23 @@ def conditions():
     if current_user.is_authenticated:
         form = ConditionsForm()
         if form.validate_on_submit():
-            if current_user.challenges.count() > 0:
-                challenge = Challenge.query.filter_by(user_id=current_user.get_id()).update(dict(goal=form.goals.data, level=form.level.data, body_part=form.challenges.data))
-                db.session.commit()
-                return redirect(url_for('pickexercise'))
-            # if current_user.challenges.count() < 2:
-                # user_condition = current_user.challenges.first()
-                # is_duplicate=False
-                # if user_condition is not None:
-                #     if form.challenges.data == user_condition.body_part.value:
-                #         is_duplicate=True
-                # if is_duplicate:
-                #     user_condition.is_duplicate = True
-                #     db.session.commit()
-            elif current_user.challenges.count() == 0:
-                is_duplicate = False
+            if current_user.challenges.count() < 2:
+                user_condition = current_user.challenges.first()
+                is_duplicate=False
+                if user_condition is not None:
+                    if form.challenges.data == user_condition.body_part.value:
+                        is_duplicate=True
+                if is_duplicate:
+                    user_condition.is_duplicate = True
+                    db.session.commit()
+
                 condition = Challenge(goal=form.goals.data, level=form.level.data,
                                         body_part=form.challenges.data, user_id=current_user.get_id(), is_duplicate=is_duplicate)
                 db.session.add(condition)
                 db.session.commit()
-                return redirect(url_for('pickexercise'))
             else:
                 flash('You can only specify up to two conditions.', 'danger')
+            return redirect(url_for('pickexercise'))
     return render_template('conditions.html', form=form)
 
 #endpoint for the exercises page
@@ -91,32 +87,35 @@ def pickexercise():
     return render_template('pickexercise.html', exercises=exercises)
 
 #endpoint for the user profile page
-@app.route('/profile', methods=['GET', 'POST'])
+@app.route('/profile')
 @login_required
 def profile():
-    if request.method == 'GET':
-        if current_user.is_authenticated:
-            challenge = Challenge.query.filter_by(user_id=current_user.get_id()).first()
-            form = ConditionsForm()
-            form.goals.data = challenge.goal
-            return render_template('profile.html', level=challenge.level.name, goal=challenge.goal.name, body_part=challenge.body_part, form=form)
-        # return render_template('conditions.html', form=form)
-        return render_template('profile.html', form=form)
+    challenge = Challenge.query.filter_by(user_id=current_user.get_id()).first()
+    form = ConditionsForm()
+    history = db.session.query(Exercise).join(History, Exercise.id == History.exercise_id). \
+                                         add_columns(History.time_stamp). \
+                                         filter(History.user_id == current_user.get_id()).all()
+    return render_template('profile.html', challenge=challenge, form=form, history=history)
 
 #endpoint for the movement page
-@app.route('/movement/<exercise>')
+@app.route('/movement/<exercise>', methods=['GET', 'POST'])
 @login_required
 def movement(exercise):
     if current_user.is_authenticated:
+        if request.method == 'POST':
+            history = History(user_id=current_user.get_id(), exercise_id=exercise, time_stamp=datetime.datetime.now())
+            db.session.add(history)
+            db.session.commit()
+            return redirect(url_for('feedback'))
         movement = Movement(exercise_id=exercise, user_id=current_user.get_id())
         db.session.add(movement)
         db.session.commit()
     return render_template('movement.html')
-# short-term, "start", create the movement, spinny graphic, stop button, 
+# short-term, "start", create the movement, spinny graphic, stop button,
 # long-term user clicks "Start" -> create movement in db, collect the user data, analyze with the calculate api show user a spinny bar "working out..."  add a stop button. When stop is clicked calculate wraps up, updates the movement object, creates a feedback entry and calls feeedback api
 
 
-#endpoint for the feedback page 
+#endpoint for the feedback page
 @app.route('/feedback', methods=['GET', 'POST'])
 @login_required
 def feedback():

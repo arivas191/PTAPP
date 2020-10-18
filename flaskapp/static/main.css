@@ -98,3 +98,21 @@ li a:active {
 #loading-image {
   position: absolute;
 }
+
+.card {
+  width: 40%;
+  left: 30%;
+  text-align: center;
+  display: none;
+  margin-bottom: 30px;
+}
+
+.row {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #e3e3e3;
+}
+
+#showHistory {
+  margin-top: 12px;
+}
