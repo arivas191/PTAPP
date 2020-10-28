@@ -12,7 +12,7 @@ def seeds():
             description='This exercise is complete by sitting upright, bending your affected knee as far back as possible. Then holding and straightening your affected knee as far as possible and holding again, then relaxing. This motion helps strengthen your thigh muscles and aids in regaining range of motion in your knee.',
             body_part="Knee",
             image_name="SeatedKneeExtension.png",
-            demo_link="https://www.youtube.com/watch?v=1nSE-RMtYJo"
+            demo_link="https://www.youtube.com/embed/1nSE-RMtYJo"
         ),
         Exercise(
             id=2,
@@ -20,7 +20,7 @@ def seeds():
             description='This exercise is completed by placing the resistance band under your feet and pulling up and down with your hand using the wrist. This motion strengthens the muscles in the wrist, which in turn helps reduce hand tremors which can occur as a result of a stroke or Parkinson’s.',
             body_part="Arm",
             image_name="WristFlexion.png",
-            demo_link="https://www.youtube.com/watch?v=z02xhAgM_6I"
+            demo_link="https://www.youtube.com/embed/z02xhAgM_6I"
         ),
         Exercise(
             id=3,
@@ -28,7 +28,7 @@ def seeds():
             description='This exercise is completed by keeping the elbow fixed and externally rotating at the shoulder to raise the band up towards the ceiling as without lifting the elbow. It strengthens your infraspinatus muscle to Improve overhead lifting and reaching',
             body_part="Shoulder",
             image_name="ShoulderExternalRotation.png",
-            demo_link="https://www.youtube.com/watch?v=cFyP6e4XeGo"
+            demo_link="https://www.youtube.com/embed/cFyP6e4XeGo"
         ),
         Exercise(
             id=4,
@@ -36,7 +36,7 @@ def seeds():
             description='This exercise is completed by laying down on the floor on your side with your head on your arm and legs bent at the knee. Keeping your feet together, lift the top leg up so that your knees are separated and then lower your leg back down slowly. This motion strengthens the hip muscles and relieves patellofemoral pain syndrome -- aka "Runner’s Knee”.',
             body_part="Hips",
             image_name="SideHipAbduction.png",
-            demo_link="https://www.youtube.com/watch?v=_3v512ODfQM"
+            demo_link="https://www.youtube.com/embed/_3v512ODfQM"
         ),
         Exercise(
             id=5,
@@ -44,7 +44,7 @@ def seeds():
             description='“A) Dorsiflexion: The pull or resistance should be pulling the foot down, so that you have to pull your foot/toes up towards you. (You may need someone to hold the band for you) -You can also anchor the other end of the tubing by tying a knot in the tubing, placing it between a door and frame then closing the door.  B) Plantarflexion: Hold band in hand so that the resistance is pulling the foot up towards you. Push foot down as if to push a gas pedal.  C) Inversion: Cross legs so the "injured” foot is under the "uninjured” leg, loop the band around the "uninjured” foot, holding the end of the band tight in hands. The resistance should want to pull the "injured” foot towards the other foot. Push the foot/ankle away from the other foot. D) Eversion: With both legs straight out about shoulder width apart, wrap the band around the ball of the "injured” foot then loop the other foot and hold the band. The resistance should pull the foot in towards the other foot. You will want to push the "injured” foot out away from the other foot”',
             body_part="Ankle",
             image_name="WayAnkleExercises.png",
-            demo_link="https://www.youtube.com/watch?v=AyxqS1g1vdU"
+            demo_link="https://www.youtube.com/embed/AyxqS1g1vdU"
         )
     ]
 
