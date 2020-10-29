@@ -2,8 +2,12 @@ from flask import render_template, url_for, flash, redirect, request, session
 from flaskapp import app, db, bcrypt
 from flaskapp.forms import RegistrationForm, LoginForm, ConditionsForm
 from flaskapp.models import *
+from flaskapp.input_movement import InputMovement
 from flask_login import login_user, current_user, logout_user, login_required
+import numpy as np
+from openpyxl import load_workbook
 import datetime
+import os
 
 #endpoint for the home page
 @app.route('/')
@@ -127,11 +131,24 @@ def feedback(movement):
         feedback = Feedback(movement_id=movement.id)
         db.session.add(feedback)
         db.session.commit()
+
         # create a history record for this completed exercise/workout
-        print(movement.exercise.id)
         history = History(user_id=current_user.get_id(), exercise_id=movement.exercise.id, time_stamp=datetime.datetime.now())
         db.session.add(history)
         db.session.commit()
+
+        #Read in the raw data from the excel file after the workout has concluded
+        movements_list = []
+        workbook = load_workbook(filename="flaskapp/static/test.xlsx", read_only=True)
+        sheet = workbook.active
+
+        for row in sheet.iter_rows(min_row=2, min_col=1, max_col=5, values_only=True):
+            movements_list.append(InputMovement(row[0], row[1], row[2], row[3], row[4]))
+
+        movements_vector = np.array(movements_list)
+        #Call the ComputeMovementMetrics class here and pass it movements_vector
+        #ComputeMovementMetrics(movements_vector)
+
         # call the AI API
         exercise = movement.exercise
     return render_template('feedback.html', feedback=feedback, exercise=exercise, movement=movement)
