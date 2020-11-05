@@ -1,3 +1,4 @@
+from datetime import datetime, date
 class ComputeMovementMetrics:
     """ movements is a vector of input movements which is the raw data
     metric 1 - the max distance the band was stretched
@@ -8,19 +9,23 @@ class ComputeMovementMetrics:
     for any repetition the max force is no less than 75% of the entire workout max strength
     """
 
-    __init__(self, movements):
+    def __init__(self, movements):
         self.movements = movements
+        self.max_distance = None
+        self.max_force = None
+        self.repetitions = None
+        self.duration = None
 
-    find_max_distance():    # TODO figure some conversion from force to distance of the band using the spring const.
-        self.max_distance = self.max_force*some_conversion
+    def find_max_distance(self):    # TODO figure some conversion from force to distance of the band using the spring const.
+        self.max_distance = self.max_force*1 # need conversion
 
-    find_max_force():
+    def find_max_force(self):
         force_measurements = []
         for x in self.movements:
             force_measurements.append(x.force)
         self.max_force = max(force_measurements)
 
-    find_repetitions(): # find the number of reps using force. this considers a positive change in force equal (with 20% margin) to at least 50% of the maximum force as a rep. 
+    def find_repetitions(self): # find the number of reps using force. this considers a positive change in force equal (with 20% margin) to at least 50% of the maximum force as a rep. 
         reps = 0        # baseline means force has reached the lower threshold that marks the start of a new rep. 
         lower_threshold = self.max_force*.75
         upper_threshold = self.max_force*.25 
@@ -35,7 +40,7 @@ class ComputeMovementMetrics:
                     baseline_met = True
         self.repetitions = reps 
 
-    find_duration():
+    def find_duration(self):
         start_time = self.movements[0].timestamp
         end_time = self.movements[-1].timestamp
-        self.duration = end_time - start_time
+        self.duration = datetime.combine(date.today(), end_time) - datetime.combine(date.today(), start_time)
