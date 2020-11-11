@@ -89,6 +89,24 @@ def pickexercise():
                     exercises.append(exercise)
     return render_template('pickexercise.html', exercises=exercises)
 
+#endpoint for the progress page
+@app.route('/progress', methods=['GET', 'POST'])
+@login_required
+def progress():
+    # if current_user.is_authenticated:
+    #     challenges = current_user.challenges
+    #     if len(challenges) == 0:
+    #         exercises = None
+    #     else:
+    #         exercises = []
+    #         for challenge in challenges:
+    #             exercise = Exercise.query.filter_by(body_part=challenge.body_part).first()
+    #             if challenge.is_duplicate and exercises:
+    #                 break
+    #             else:
+    #                 exercises.append(exercise)
+    return render_template('progress.html')
+
 #endpoint for the user profile page
 @app.route('/profile')
 @login_required
