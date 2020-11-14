@@ -3,6 +3,7 @@ from flaskapp import app, db, bcrypt
 from flaskapp.forms import RegistrationForm, LoginForm, ConditionsForm
 from flaskapp.models import *
 from flaskapp.input_movement import InputMovement
+from flaskapp.compute import ComputeMovementMetrics
 from flask_login import login_user, current_user, logout_user, login_required
 import numpy as np
 from openpyxl import load_workbook
@@ -165,7 +166,15 @@ def feedback(movement):
 
         movements_vector = np.array(movements_list)
         #Call the ComputeMovementMetrics class here and pass it movements_vector
-        #ComputeMovementMetrics(movements_vector)
+        calculations = ComputeMovementMetrics(movements_vector)
+        calculations.find_max_force()
+        calculations.find_max_distance()
+        calculations.find_repetitions()
+        calculations.find_duration()
+        print(calculations.max_force)
+        print(calculations.max_distance)
+        print(calculations.repetitions)
+        print(calculations.duration)
 
         # call the AI API
         exercise = movement.exercise
