@@ -10,6 +10,7 @@
     {% if current_user.is_authenticated %}
       <ul>
         <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+        <li><a href="{{ url_for('progress') }}">Progress</a></li>
         <li><a href="{{ url_for('profile') }}">Profile</a></li>
         <li><a href="{{ url_for('pickexercise') }}">Exercises</a></li>
         <li><a href="{{ url_for('home') }}">Home</a></li>

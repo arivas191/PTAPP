@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="static/main.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Progress</title>
+  </head>
+  <body>
+    <ul>
+      <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+      <li><a href="{{ url_for('progress') }}">Progress</a></li>
+      <li><a href="{{ url_for('profile') }}">Profile</a></li>
+      <li><a href="{{ url_for('pickexercise') }}">Exercises</a></li>
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+    </ul>
+<div class="container">
+   <br>
+    <br>
+    <br>
+<h1>Check Your Progress</h1>
+    <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Exercise
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item" href="#">Wrist Flexion</a>
+      <a class="dropdown-item" href="#">Knee-Extension</a>
+      <a class="dropdown-item" href="#">Ankle Rotation</a>
+      <a class="dropdown-item" href="#">Shoulder External Rotation</a>
+      <a class="dropdown-item" href="#">Side Hip Abduction</a>
+  </div>
+</div>
+</div>
+
+
+<div class="container">
+
+    <div class="row text-center text-lg-left">
+
+        <div class="col-lg-12">
+             <img src='/static/my_plot2.png' width="1000px">
+        </div>
+
+<!--        <div class="col-lg-6">-->
+<!--            <img src='/static/my_plot.png' width="800px">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--      <div class="row text-center text-lg-left">-->
+
+<!--        <div class="col-lg-6">-->
+<!--             <img src='/static/my_plot.png' width="800px">-->
+<!--        </div>-->
+<!--        <div class="col-lg-6">-->
+<!--             <img src='/static/my_plot.png' width="800px">-->
+<!--        </div>-->
+<!--    </div>-->
+    </div>
+</div>
+
+</body>
+</html>
