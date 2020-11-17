@@ -8,7 +8,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 import numpy as np
 from openpyxl import load_workbook
 import datetime
-import os
+import csv
 
 #endpoint for the home page
 @app.route('/')
@@ -158,24 +158,61 @@ def feedback(movement):
 
         #Read in the raw data from the excel file after the workout has concluded
         movements_list = []
-        workbook = load_workbook(filename="flaskapp/static/test.xlsx", read_only=True)
-        sheet = workbook.active
 
-        for row in sheet.iter_rows(min_row=2, min_col=1, max_col=5, values_only=True):
-            movements_list.append(InputMovement(row[0], row[1], row[2], row[3], row[4]))
+        with open('flaskapp/static/user_data.csv') as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            line_count = 0
+            reset = False
+            for row in csv_reader:
+                if line_count == 0:
+                    line_count += 1
+                else:
+                    movements_list.append(InputMovement(datetime.datetime.fromtimestamp(int(row[0])//1000.0).time(), float(row[1])))
 
         movements_vector = np.array(movements_list)
+
         #Call the ComputeMovementMetrics class here and pass it movements_vector
         calculations = ComputeMovementMetrics(movements_vector)
         calculations.find_max_force()
         calculations.find_max_distance()
         calculations.find_repetitions()
         calculations.find_duration()
-        print(calculations.max_force)
-        print(calculations.max_distance)
-        print(calculations.repetitions)
-        print(calculations.duration)
+        #print(calculations.max_force)
+        #print(calculations.max_distance)
+        #print(calculations.repetitions)
+        #print(calculations.duration)
+
+        #Capture the user's max force in a variable
+        user_max_force = calculations.max_force
+        #Capture the user's reps force in a variable
+        user_repetitions = calculations.repetitions
+
+        #Hardcoded values for the workouts, these should probably live as constant variables in the scikit method
+        curl_ideal_force = 10.4
+        curl_ideal_repetitions = 8
+        curl_weak_force = 6.3
+        curl_weak_repetitions = 5
+
+        hip_abd_ideal_force = 8.7
+        hip_abd_ideal_repetitions = 6
+        hip_abd_weak_force = 5.2
+        hip_abd_weak_repetitions = 3
+
+        knee_ext_ideal_force = 8.2
+        knee_ext_ideal_repetitions = 4
+        knee_ext_weak_force = 5.3
+        knee_ext_ideal_repetitions = 4
+
+        exercise_id = movement.exercise.id
+
+        ##### CALL scikit method here and pass the user's max force, reps and exercise id #####
+
+        #Method should probably return a category string, which will be passed to the frontend
+        category = 'Beginner' #remove this with the scikit method call
+
 
         # call the AI API
         exercise = movement.exercise
-    return render_template('feedback.html', feedback=feedback, exercise=exercise, movement=movement)
+    return render_template('feedback.html', feedback=feedback, exercise=exercise,
+                            movement=movement, category=category, repetitions=user_repetitions,
+                            force=user_max_force)

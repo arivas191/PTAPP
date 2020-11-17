@@ -7,9 +7,6 @@
 
 class InputMovement:
 
-    def __init__(self, timestamp, force, x, y, z):
+    def __init__(self, timestamp, force):
         self.timestamp = timestamp
         self.force = force
-        self.acceleration_x = x
-        self.acceleration_y = y
-        self.acceleration_z = z

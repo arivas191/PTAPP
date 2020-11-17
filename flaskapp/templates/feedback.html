@@ -18,13 +18,16 @@
       <div class="exercise-content">
         <div class="row">
           <div class="col-8 text-center">
-            <h3>For Exercise: </h3> 
+            <h3>For Exercise: </h3>
             <a type="button" href="{{exercise.demo_link}}" target="_blank">
               <h3>{{ exercise.title }}</h3>
               <img src="{{url_for('static', filename=exercise.image_name)}}", title={{exercise.title}}/>
             </a>
             <h5>{{ exercise.description }}</h5>
             <h4>Completed At: {{movement.created_at}}</h4>
+            <h4>Your level is: {{ category }}</h4>
+            <h4>You completed: {{ repetitions }} repetitions</h4>
+            <h4>Your max force was: {{ force }}</h4>
           </div>
         </div>
       </div>
