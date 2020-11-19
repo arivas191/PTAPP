@@ -96,11 +96,12 @@ class Movement(db.Model):
     repetitions_num = db.Column(db.Integer)
     max_distance = db.Column(db.Integer)
     max_force = db.Column(db.Integer)
+    duration = db.Column(db.Interval)
     steadiness = db.Column(Enum(Steadiness))
     feedback = db.relationship('Feedback', uselist=False, backref='movement')
 
     def __repr__(self):
-        return f"Movement('{self.user_id}', '{self.Exercise.title}')"
+        return f"Movement('{self.id}', '{self.user_id}', '{self.exercise.title}', '{self.repetitions_num}', '{self.max_force}', '{self.duration}')"
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)

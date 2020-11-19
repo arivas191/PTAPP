@@ -174,13 +174,21 @@ def feedback(movement):
         calculations.find_max_force()
         calculations.find_repetitions()
         calculations.find_duration()
-        #print(calculations.max_force)            - need to add these to the movement record in the DB
+        #print(calculations.max_force)
         #print(calculations.repetitions)
         #print(calculations.duration)
 
         user_max_force = calculations.max_force
         user_repetitions = calculations.repetitions
         exercise = movement.exercise
+
+        #Update the movement record with the user's metrics
+        movement.max_force = user_max_force
+        movement.repetitions_num = user_repetitions
+        movement.duration = calculations.duration
+        db.session.add(movement)
+        db.session.commit()
+
         ##### CALL scikit method here and pass the user's max force, reps and exercise id #####
         category = 'Beginner' #remove this with the scikit method call
 
