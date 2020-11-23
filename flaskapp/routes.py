@@ -161,22 +161,29 @@ def feedback(movement):
 
         with open('flaskapp/static/user_data.csv') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
-            line_count = 0
+            workout = False
             reset = False
+        
             for row in csv_reader:
-                if line_count == 0:
-                    line_count += 1
-                else:
-                    movements_list.append(InputMovement(datetime.datetime.fromtimestamp(int(row[0])//1000.0).time(), float(row[1])))
+                if len(row) == 0:
+                    continue
+                if row[0] == 'reset':
+                    workout = True
+                    print(workout)
+                elif workout:
+                        if len(row) ==2 and not row[1] == '':
+                            movements_list.append(InputMovement(datetime.datetime.fromtimestamp(int(row[0])//1000.0).time(), float(row[1])))
         movements_vector = np.array(movements_list)
 
+        print(movements_list[1].timestamp)
+        print(movements_list[1].force)
         calculations = ComputeMovementMetrics(movements_vector)
         calculations.find_max_force()
         calculations.find_repetitions()
         calculations.find_duration()
-        #print(calculations.max_force)
-        #print(calculations.repetitions)
-        #print(calculations.duration)
+        print(calculations.max_force)
+        print(calculations.repetitions)
+        print(calculations.duration)
 
         user_max_force = calculations.max_force
         user_repetitions = calculations.repetitions
