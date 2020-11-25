@@ -9,6 +9,7 @@ import numpy as np
 from openpyxl import load_workbook
 import datetime
 import csv
+from flaskapp.ai import AI
 
 #endpoint for the home page
 @app.route('/')
@@ -188,7 +189,7 @@ def feedback(movement):
 
         user_max_force = calculations.max_force
         user_repetitions = calculations.repetitions
-        exercise = movement.exercise
+        exercise = movement.exercise.body_part.value
 
         #Update the movement record with the user's metrics
         movement.max_force = user_max_force
@@ -197,10 +198,21 @@ def feedback(movement):
         db.session.add(movement)
         db.session.commit()
 
-        ##### CALL scikit method here and pass the user's max force, reps and exercise id #####
-        category = 'Beginner' #remove this with the scikit method call
+        #### CALL scikit method here and pass the user's max force, reps and exercise id #####
+        print(user_max_force)
+        print(user_repetitions)
+        print(exercise)
+        ai = AI(user_max_force, user_repetitions, exercise) # placeholder value for reps
+
+        strength_feedback = ai.run()
+        print(strength_feedback[0])
+        print(type(strength_feedback[0]))
+
+
+        
+        
 
         # call the AI API
     return render_template('feedback.html', feedback=feedback, exercise=exercise,
-                            movement=movement, category=category, repetitions=user_repetitions,
+                            movement=movement, category=strength_feedback, repetitions=user_repetitions,
                             force=user_max_force)

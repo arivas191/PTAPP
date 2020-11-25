@@ -27,12 +27,13 @@ class ComputeMovementMetrics:
 
     def find_repetitions(self): # find the number of reps using force. this considers a positive change in force equal (with 20% margin) to at least 50% of the maximum force as a rep. 
         reps = 0        # baseline means force has reached the lower threshold that marks the start of a new rep. 
-        lower_threshold = self.max_force*.75
-        upper_threshold = self.max_force*.25 
+        #self.force_measurements[1:] - self.force_measurments[0,end-1]
+        lower_threshold = self.max_force*.25
+        upper_threshold = self.max_force*.80 
         baseline_met = True
         for x in self.movements:
             if baseline_met: 
-                if ((upper_threshold*.9) <= x.force <= (upper_threshold*1.1)):
+                if ((upper_threshold*.6) <= x.force <= (upper_threshold)):
                     reps += 1
                     baseline_met = False
             else:

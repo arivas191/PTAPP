@@ -19,7 +19,13 @@ class AI:
         ai = svm.SVC(gamma=0.001) # gamma taken from the digits example
         ai.fit(x, y) # fit the classifier to the data (calibrate)
         strength_feedback = ai.predict(self.strength) # get the category
-        return strength_feedback
+        if strength_feedback[0] == 1.0:
+            return 'Beginner'
+        if strength_feedback[0] == 2.0:
+            return 'Intermediate'
+        if strength_feedback[0] == 3.0:
+            return 'Advanced'
+        #return strength_feedback
 
     def get_training_data(self):
         global beginner
