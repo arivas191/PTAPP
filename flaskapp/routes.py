@@ -10,6 +10,7 @@ from openpyxl import load_workbook
 import datetime
 import csv
 from flaskapp.ai import AI
+import os
 
 #endpoint for the home page
 @app.route('/')
@@ -136,7 +137,6 @@ def movement(exercise):
 
         #Clear the csv file for a new exercise to be added
         open('flaskapp/static/user_data.csv', 'w').close()
-
     return render_template('movement.html', movement=movement)
 # short-term, "start", create the movement, spinny graphic, stop button,
 # long-term user clicks "Start" -> create movement in db, collect the user data, analyze with the calculate api show user a spinny bar "working out..."  add a stop button. When stop is clicked calculate wraps up, updates the movement object, creates a feedback entry and calls feeedback api
@@ -175,7 +175,7 @@ def feedback(movement):
                 if row[0] == 'reset':
                     workout = True
                 elif workout:
-                        if len(row) ==2 and not row[1] == '':
+                        if len(row) ==2 and not row[1] == '' and not row[1] == '-':
                             movements_list.append(InputMovement(datetime.datetime.fromtimestamp(int(row[0])//1000.0).time(), float(row[1])))
         movements_vector = np.array(movements_list)
 
