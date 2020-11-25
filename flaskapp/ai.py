@@ -12,20 +12,21 @@ class AI:
         self.exercise = exercise_body_part
 
     def run(self):
-        movement_training = self.get_training_data()
-        x = movement_training[:,:-1] 
-        y = movement_training[:,-1] 
+        strength_movement_training, endurance_movement_training = self.get_training_data()
+        strength_x = strength_movement_training[:,:-1] 
+        strength_y = strength_movement_training[:,-1] 
+        endurance_x = endurance_movement_training[:,:-1]
+        endurance_y = endurance_movement_training[:,-1]
 
-        ai = svm.SVC(gamma=0.001) # gamma taken from the digits example
-        ai.fit(x, y) # fit the classifier to the data (calibrate)
-        strength_feedback = ai.predict(self.strength) # get the category
-        if strength_feedback[0] == 1.0:
-            return 'Beginner'
-        if strength_feedback[0] == 2.0:
-            return 'Intermediate'
-        if strength_feedback[0] == 3.0:
-            return 'Advanced'
-        #return strength_feedback
+        ai_strength = svm.SVC(gamma=0.001) # gamma taken from the digits example
+        ai_strength.fit(strength_x, strength_y) # fit the classifier to the data (calibrate)
+        strength_feedback = ai_strength.predict(self.strength) 
+
+        ai_endurance = svm.SVC(gamma=0.001)
+        ai_endurance.fit(endurance_x, endurance_y)
+        endurance_feedback = ai_endurance.predict(self.reps)
+
+        return self.convert_level_to_string(strength_feedback), self.convert_level_to_string(endurance_feedback)
 
     def get_training_data(self):
         global beginner
@@ -38,43 +39,49 @@ class AI:
         curl_ideal_force = 10.4
         hip_ideal_force = 8.7
         knee_ideal_force = 8.2
+        # ankle_ideal_force
+        # shoulder_ideal_force
+
+        curl_ideal_reps = 8
+        hip_ideal_reps = 6
+        knee_ideal_reps = 7
+        # ankle_ideal_reps
+        # shoulder_ideal_reps
 
         if self.exercise == 'Arm':
-            return self.construct_array(curl_ideal_force)
+            strength = self.construct_array(curl_ideal_force)
+            endurance = self.construct_array(curl_ideal_reps)
         elif self.exercise == 'Hips':
-            return self.construct_array(hip_ideal_force)
+            strength = self.construct_array(hip_ideal_force)
+            endurance = self.construct_array(hip_ideal_reps)
         elif self.exercise == 'Knee':
-            return self.construct_array(knee_ideal_force)
+            strength = self.construct_array(knee_ideal_force) 
+            endurance = self.construct_array(knee_ideal_reps)
         # elif self.exercise == 'Ankle':
-        #     return np.array([])
+        #     strength = self.construct_array(ankle_ideal_force) 
+        #     endurance = self.construct_array(ankle_ideal_reps)
         # elif self.exercise == 'Shoulder':
-        #     return np.array([])
+        #     strength = self.construct_array(shoulder_ideal_force) 
+        #     endurance = self.construct_array(shoulder_ideal_reps)
 
-    def construct_array(self, ideal_force):
+        return strength, endurance
+
+    def construct_array(self, ideal):
         return np.array([
-                    [ideal_force,advanced],
-                    [ideal_force*0.92,advanced],
-                    [ideal_force*0.85,advanced],
-                    [ideal_force*0.84,intermediate],
-                    [ideal_force*0.70,intermediate],
-                    [ideal_force*0.61,intermediate],
-                    [ideal_force*0.59,beginner],
-                    [ideal_force*0.40,beginner],
-                    [ideal_force*0.30,beginner]
+                    [ideal,advanced],
+                    [ideal*0.92,advanced],
+                    [ideal*0.85,advanced],
+                    [ideal*0.84,intermediate],
+                    [ideal*0.70,intermediate],
+                    [ideal*0.61,intermediate],
+                    [ideal*0.59,beginner],
+                    [ideal*0.40,beginner],
+                    [ideal*0.30,beginner]
                 ])
-
-    #Hardcoded values for the workouts, these should probably live as constant variables in the scikit method
-    # curl_ideal_force = 10.4
-    # curl_ideal_repetitions = 8
-    # curl_weak_force = 6.3
-    # curl_weak_repetitions = 5
-
-    # hip_abd_ideal_force = 8.7
-    # hip_abd_ideal_repetitions = 6
-    # hip_abd_weak_force = 5.2
-    # hip_abd_weak_repetitions = 3
-
-    # knee_ext_ideal_force = 8.2
-    # knee_ext_ideal_repetitions = 4
-    # knee_ext_weak_force = 5.3
-    # knee_ext_ideal_repetitions = 4
+    def convert_level_to_string(self, level):
+        if level == 1:
+            return 'Beginner'
+        elif level == 2:
+            return 'Intermediate'
+        elif level == 3:
+            return 'Advanced'

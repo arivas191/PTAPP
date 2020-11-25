@@ -202,17 +202,16 @@ def feedback(movement):
         print(user_max_force)
         print(user_repetitions)
         print(exercise)
-        ai = AI(user_max_force, user_repetitions, exercise) # placeholder value for reps
+        ai = AI(user_max_force, user_repetitions, exercise) 
 
-        strength_feedback = ai.run()
+        strength_feedback, endurance_feedback = ai.run()
         print(strength_feedback[0])
         print(type(strength_feedback[0]))
 
-
-        
-        
+        print(endurance_feedback[0])
+        print(type(endurance_feedback[0]))
 
         # call the AI API
     return render_template('feedback.html', feedback=feedback, exercise=exercise,
-                            movement=movement, category=strength_feedback, repetitions=user_repetitions,
+                            movement=movement, strength_category=strength_feedback, endurance_category=endurance_feedback, repetitions=user_repetitions,
                             force=user_max_force)
