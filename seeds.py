@@ -16,11 +16,11 @@ def seeds():
         ),
         Exercise(
             id=2,
-            title="Wrist Flexion",
-            description='This exercise is completed by placing the resistance band under your feet and pulling up and down with your hand using the wrist. This motion strengthens the muscles in the wrist, which in turn helps reduce hand tremors which can occur as a result of a stroke or Parkinson’s.',
+            title="Bicep Curl",
+            description='This exercise is completed by placing the resistance band under your feet and slowly curl your hand up to the shoulder, squeezing the bicep and keeping your elbow next to your side. Then slowly release your arm back down to starting postition and repeat with both arms.',
             body_part="Arm",
-            image_name="WristFlexion.png",
-            demo_link="https://www.youtube.com/embed/z02xhAgM_6I"
+            image_name="bicep.jpeg",
+            demo_link="https://www.youtube.com/embed/cjtdsi9BzxA"
         ),
         Exercise(
             id=3,

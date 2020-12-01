@@ -123,3 +123,7 @@ li a:active {
   text-align: center;
   text-decoration: underline;
 }
+
+#progressTitle {
+    text-align: center;
+}
