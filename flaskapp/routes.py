@@ -136,7 +136,7 @@ def movement(exercise):
         db.session.commit()
 
         #Clear the csv file for a new exercise to be added
-        open('flaskapp/static/user_data.csv', 'w').close()
+        #open('flaskapp/static/user_data.csv', 'w').close()
     return render_template('movement.html', movement=movement)
 # short-term, "start", create the movement, spinny graphic, stop button,
 # long-term user clicks "Start" -> create movement in db, collect the user data, analyze with the calculate api show user a spinny bar "working out..."  add a stop button. When stop is clicked calculate wraps up, updates the movement object, creates a feedback entry and calls feeedback api
@@ -163,29 +163,35 @@ def feedback(movement):
 
         #Read in the data from the excel file after the workout has concluded
         movements_list = []
-
+        print('inhere')
         with open('flaskapp/static/user_data.csv') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             workout = False
             reset = False
-
-            for row in csv_reader:
-                if len(row) == 0:
-                    continue
-                if row[0] == 'reset':
-                    workout = True
-                elif workout:
-                        if len(row) ==2 and not row[1] == '' and not row[1] == '-':
-                            movements_list.append(InputMovement(datetime.datetime.fromtimestamp(int(row[0])//1000.0).time(), float(row[1])))
+            
+            for row in reversed(list(csv_reader)):
+                elements = row
+                if elements[0] == 'reset':
+                    break
+                elif len(elements) == 2:
+                    movements_list.append(InputMovement(datetime.datetime.fromtimestamp(int(elements[0])//1000.0).time(), float(elements[1])))
         movements_vector = np.array(movements_list)
+
+##                if row[0] == 'reset':
+##                    workout = True
+##                elif workout:
+##                        if len(row) ==2 and not row[1] == '' and not row[1] == '-':
+##                            movements_list.append(InputMovement(datetime.datetime.fromtimestamp(int(row[0])//1000.0).time(), float(row[1])))
+##        movements_vector = np.array(movements_list)
+
 
         calculations = ComputeMovementMetrics(movements_vector)
         calculations.find_max_force()
         calculations.find_repetitions()
         calculations.find_duration()
-        #print(calculations.max_force)
-        #print(calculations.repetitions)
-        #print(calculations.duration)
+        print(calculations.max_force)
+        print(calculations.repetitions)
+        print(calculations.duration)
 
         user_max_force = calculations.max_force
         user_repetitions = calculations.repetitions
