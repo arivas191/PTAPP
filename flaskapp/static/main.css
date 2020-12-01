@@ -127,3 +127,7 @@ li a:active {
 #progressTitle {
     text-align: center;
 }
+
+canvas {
+  margin-bottom: 100px;
+}

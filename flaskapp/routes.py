@@ -97,22 +97,28 @@ def pickexercise():
     return render_template('pickexercise.html', exercises=exercises)
 
 #endpoint for the progress page
-@app.route('/progress', methods=['GET', 'POST'])
+@app.route('/progress', defaults={'exercise_id': None})
+@app.route('/progress/<exercise_id>', methods=['GET', 'POST'])
 @login_required
-def progress():
-    # if current_user.is_authenticated:
-    #     challenges = current_user.challenges
-    #     if len(challenges) == 0:
-    #         exercises = None
-    #     else:
-    #         exercises = []
-    #         for challenge in challenges:
-    #             exercise = Exercise.query.filter_by(body_part=challenge.body_part).first()
-    #             if challenge.is_duplicate and exercises:
-    #                 break
-    #             else:
-    #                 exercises.append(exercise)
-    return render_template('progress.html')
+def progress(exercise_id):
+
+    max_forces = []
+    repetitions = []
+    timestamps = []
+    graph = False
+
+    if exercise_id is not None:
+        #Get all the user movements
+        movements = Movement.query.filter_by(user_id=current_user.get_id()).all()
+
+        for movement in movements:
+            if int(movement.exercise_id) == int(exercise_id):
+                max_forces.append(movement.max_force)
+                repetitions.append(movement.repetitions_num)
+                timestamps.append(movement.created_at)
+        graph = True
+
+    return render_template('progress.html', max_forces=max_forces, repetitions=repetitions, timestamps=timestamps, graph=graph)
 
 #endpoint for the user profile page
 @app.route('/profile')
@@ -136,7 +142,7 @@ def movement(exercise):
         db.session.commit()
 
         #Clear the csv file for a new exercise to be added
-        open('flaskapp/static/user_data.csv', 'w').close()
+        #open('flaskapp/static/user_data.csv', 'w').close()
     return render_template('movement.html', movement=movement)
 # short-term, "start", create the movement, spinny graphic, stop button,
 # long-term user clicks "Start" -> create movement in db, collect the user data, analyze with the calculate api show user a spinny bar "working out..."  add a stop button. When stop is clicked calculate wraps up, updates the movement object, creates a feedback entry and calls feeedback api
@@ -183,9 +189,6 @@ def feedback(movement):
         calculations.find_max_force()
         calculations.find_repetitions()
         calculations.find_duration()
-        #print(calculations.max_force)
-        #print(calculations.repetitions)
-        #print(calculations.duration)
 
         user_max_force = calculations.max_force
         user_repetitions = calculations.repetitions
@@ -198,20 +201,10 @@ def feedback(movement):
         db.session.add(movement)
         db.session.commit()
 
-        #### CALL scikit method here and pass the user's max force, reps and exercise id #####
-        print(user_max_force)
-        print(user_repetitions)
-        print(exercise)
-        ai = AI(user_max_force, user_repetitions, exercise) 
+        ai = AI(user_max_force, user_repetitions, exercise)
 
         strength_feedback, endurance_feedback = ai.run()
-        print(strength_feedback[0])
-        print(type(strength_feedback[0]))
 
-        print(endurance_feedback[0])
-        print(type(endurance_feedback[0]))
-
-        # call the AI API
     return render_template('feedback.html', feedback=feedback, exercise=exercise,
                             movement=movement, strength_category=strength_feedback, endurance_category=endurance_feedback, repetitions=user_repetitions,
                             force=user_max_force)
