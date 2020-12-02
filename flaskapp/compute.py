@@ -25,26 +25,17 @@ class ComputeMovementMetrics:
             force_measurements.append(x.force)
         self.max_force = max(force_measurements)
 
-    def find_repetitions(self): # find the number of reps using force. this considers a positive change in force equal (with 20% margin) to at least 50% of the maximum force as a rep. 
+    def find_repetitions(self): # find the number of reps using force. this considers a positive change in force equal (with 20% margin) to at least 50% of the maximum force as a rep.
         reps = 0
-
         count = 0
 
         for i in range(1, len(self.movements) - 1):
-
             if self.movements[i].force > self.movements[i - 1].force and self.movements[i].force > 2:
-
                 count += 1
-
             elif self.movements[i].force < self.movements[i - 1].force and count >= 4:
-
                 reps += 1
-
                 count = 0
         self.repetitions = reps
-
-
-        
 
     def find_duration(self):
         start_time = self.movements[0].timestamp
