@@ -117,7 +117,7 @@ def progress(exercise_id):
                 max_forces.append(movement.max_force)
                 repetitions.append(movement.repetitions_num)
                 durations.append(movement.duration.total_seconds())
-                timestamps.append(movement.created_at)
+                timestamps.append(movement.created_at.replace(microsecond=0))
         graph = True
 
     return render_template('progress.html', max_forces=max_forces, repetitions=repetitions, durations=durations, timestamps=timestamps, graph=graph)
@@ -155,6 +155,7 @@ def movement(exercise):
 def feedback(movement):
     if current_user.is_authenticated:
         movement = Movement.query.get(movement)
+        exercise = movement.exercise
         # if movement.feedback:
         #     # user is viewing a past feedback
         # else:
@@ -194,7 +195,7 @@ def feedback(movement):
 
         user_max_force = calculations.max_force
         user_repetitions = calculations.repetitions
-        exercise = movement.exercise.body_part.value
+        exercise_body_part = movement.exercise.body_part.value
 
         #Update the movement record with the user's metrics
         movement.max_force = user_max_force
@@ -203,8 +204,7 @@ def feedback(movement):
         db.session.add(movement)
         db.session.commit()
 
-        ai = AI(user_max_force, user_repetitions, exercise)
-
+        ai = AI(user_max_force, user_repetitions, exercise_body_part)
         strength_feedback, endurance_feedback = ai.run()
 
     return render_template('feedback.html', feedback=feedback, exercise=exercise,
