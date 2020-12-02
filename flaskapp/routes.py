@@ -104,6 +104,7 @@ def progress(exercise_id):
 
     max_forces = []
     repetitions = []
+    durations = []
     timestamps = []
     graph = False
 
@@ -112,13 +113,14 @@ def progress(exercise_id):
         movements = Movement.query.filter_by(user_id=current_user.get_id()).all()
 
         for movement in movements:
-            if int(movement.exercise_id) == int(exercise_id):
+            if movement.exercise_id == int(exercise_id):
                 max_forces.append(movement.max_force)
                 repetitions.append(movement.repetitions_num)
+                durations.append(movement.duration.total_seconds())
                 timestamps.append(movement.created_at)
         graph = True
 
-    return render_template('progress.html', max_forces=max_forces, repetitions=repetitions, timestamps=timestamps, graph=graph)
+    return render_template('progress.html', max_forces=max_forces, repetitions=repetitions, durations=durations, timestamps=timestamps, graph=graph)
 
 #endpoint for the user profile page
 @app.route('/profile')

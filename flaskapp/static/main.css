@@ -130,4 +130,6 @@ li a:active {
 
 canvas {
   margin-bottom: 100px;
+  width:600px !important;
+  height:400px !important;
 }

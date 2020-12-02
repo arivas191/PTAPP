@@ -4,7 +4,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="../static/main.css" rel="stylesheet">
     <meta charset="utf-8">
@@ -37,10 +37,13 @@
       </div>
       <center id="graph">
           <h1>Your Repetitions</h1>
-          <canvas id="repsChart" width="600" height="400"></canvas>
+          <canvas id="repsChart"></canvas>
 
           <h1>Your Max Forces</h1>
-          <canvas id="forcesChart" width="600" height="400"></canvas>
+          <canvas id="forcesChart"></canvas>
+
+          <h1>Your Durations</h1>
+          <canvas id="durationsChart"></canvas>
           <script>
             {% if not graph %}
               document.getElementById('graph').style.display = 'none'
@@ -48,42 +51,65 @@
 
             // line chart data for reps
             var lineData = {
-              labels : [
+              labels:[
                 {% for item in timestamps %}
                   "{{ item }}",
                 {% endfor %}
               ],
-
-              datasets : [{
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
-                bezierCurve : false,
+              datasets: [{
+                backgroundColor: "rgba(151,187,205,0.2)",
                 data : [
       	           {% for item in repetitions %}
                       "{{ item }}",
                    {% endfor %}]
               }]
-            }
+            };
 
-            // get bar chart canvas
+            // get chart canvas
             var repsChart = document.getElementById("repsChart").getContext("2d");
             var forcesChart = document.getElementById("forcesChart").getContext("2d");
+            var durationsChart = document.getElementById("durationsChart").getContext("2d");
 
+            var max = Math.max(...lineData.datasets[0].data);
             // draw line chart
-            var LineChartDemo = new Chart(repsChart).Line(lineData, {
-              scaleOverride: true,
-              scaleSteps: 7,
-              scaleStepWidth: 2,
-              scaleStartValue: 0,
-              scaleShowVerticalLines: true,
-              scaleShowGridLines : true,
-              barShowStroke : true,
-              scaleShowLabels: true,
-              bezierCurve: false,
+            var myLineChart = new Chart(repsChart, {
+                type: 'line',
+                data: lineData,
+                options: {
+                  legend: {
+                    display: false
+                  },
+                  elements: {
+                    line: {
+                      tension: 0
+                    }
+                  },
+                  scales: {
+                    yAxes: [{
+                      ticks: {
+                        max: max + 2,
+                        min: 0,
+                        stepSize: 1,
+                        fontSize: 20
+                      },
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Repetition',
+                        fontSize: 30
+                      }
+                    }],
+                    xAxes: [{
+                      ticks: {
+                        fontSize: 20
+                      },
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Time Completed',
+                        fontSize: 30
+                      }
+                    }]
+                  }
+                }
             });
 
             // update the dataset with the max forces
@@ -93,19 +119,96 @@
                {% endfor %}
              ]
 
+            max = Math.max(...lineData.datasets[0].data);
             // draw line chart
-            var LineChartDemo = new Chart(forcesChart).Line(lineData, {
-              scaleOverride: true,
-              scaleSteps: 7,
-              scaleStepWidth: 2,
-              scaleStartValue: 0,
-              scaleShowVerticalLines: true,
-              scaleShowGridLines : true,
-              barShowStroke : true,
-              scaleShowLabels: true,
-              bezierCurve: false,
+            var myLineChart = new Chart(forcesChart, {
+                type: 'line',
+                data: lineData,
+                options: {
+                  legend: {
+                    display: false
+                  },
+                  elements: {
+                    line: {
+                      tension: 0
+                    }
+                  },
+                  scales: {
+                    yAxes: [{
+                      ticks: {
+                        max: max + 2,
+                        min: 0,
+                        stepSize: 1,
+                        fontSize: 20
+                      },
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Force',
+                        fontSize: 30
+                      }
+                    }],
+                    xAxes: [{
+                      ticks: {
+                        fontSize: 20
+                      },
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Time Completed',
+                        fontSize: 30
+                      }
+                    }]
+                  }
+                }
             });
 
+            // update the dataset with the durations
+            lineData.datasets[0].data = [
+               {% for item in durations %}
+                  "{{ item }}",
+               {% endfor %}
+             ]
+
+            max = Math.max(...lineData.datasets[0].data);
+            // draw line chart
+            var myLineChart = new Chart(durationsChart, {
+                type: 'line',
+                data: lineData,
+                options: {
+                  legend: {
+                    display: false
+                  },
+                  elements: {
+                    line: {
+                      tension: 0
+                    }
+                  },
+                  scales: {
+                    yAxes: [{
+                      ticks: {
+                        max: max + 2,
+                        min: 0,
+                        stepSize: 2,
+                        fontSize: 20
+                      },
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Duration',
+                        fontSize: 30
+                      }
+                    }],
+                    xAxes: [{
+                      ticks: {
+                        fontSize: 20
+                      },
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Time Completed',
+                        fontSize: 30
+                      }
+                    }]
+                  }
+                }
+            });
           </script>
         </center>
     </div>
