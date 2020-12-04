@@ -108,10 +108,11 @@ li a:active {
 }
 
 .row {
-  margin-top: 15px;
-  padding-top: 10px;
+  align-content: center;
   border-top: 1px solid #e3e3e3;
 }
+
+
 
 #showHistory {
   margin-top: 12px;
@@ -132,4 +133,19 @@ canvas {
   margin-bottom: 100px;
   width:600px !important;
   height:400px !important;
+}
+
+#frame {
+    width: 420px;
+    height: 300px;
+}
+
+#exerciseDisplay{
+     text-align: center;
+    align-content: center;
+}
+
+#exerciseDesc {
+    margin-left: 15%;
+    margin-right: 15%;
 }
