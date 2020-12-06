@@ -173,7 +173,7 @@ def feedback(movement):
                 elements = row
                 if elements[0] == 'reset':
                     break
-                elif len(elements) == 2:
+                elif len(elements) == 2 and elements[1] != '':
                     movements_list.append(InputMovement(datetime.datetime.fromtimestamp(int(elements[0])//1000.0).time(), float(elements[1])))
         movements_vector = np.array(movements_list)
 
