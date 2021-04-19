@@ -1,48 +1,39 @@
 # PTAPP
-I'm writing here the commands I had to run to set it up. I'm using a mac, so keep that in mind as they may differ from you.
-
-First, you need to have python and pip installed. I already had them installed from before so I didn't need to run anything. Once you have these, you need to install flask:
-
-`pip3 install flask`
-
-Then do:
-
-`export FLASK_APP=run.py`
-
-Now, download all the external libraries the program uses:
-
-`pip3 install flask-wtf`<br/>
-`pip3 install openpyxl`<br/>
-`pip3 install numpy`<br/>
-`pip3 install flask-sqlalchemy`<br/>
-`pip3 install flask-bcrypt`<br/>
-`pip3 install flask-login`<br/>
-`pip3 install scikit-learn`<br/>
+After cloning the repo and moving into its directory, I recommend using a Python virtual environment:
+```
+virtualenv venv
+source venv/bin/activate
+```
+Now you can install all the packages and dependencies in requirements.txt:
+```
+pip3 install -r requirements.txt
+```
+You can also use `pip` instead of `pip3`, depending on your setup. If you ever install more packages, make sure to add them to the requirements.txt file by doing:
+```
+pip3 freeze > requirements.txt
+```
 
 You will need to create the DB file locally since it will not be included in the repository. Run the following commands to create it:
-
-`python3`<br/>
-`from flaskapp import db`<br/>
-`from flaskapp.models import *`<br/>
-`db.create_all()`
+```
+python3
+from flaskapp import db
+from flaskapp.models import *
+db.create_all()
+```
 
 You can now query the DB to verify it was created properly (you should also see a site.db file created inside the flaskapp directory):
-
-`User.query.all()`
+```
+User.query.all()
+```
 
 And that should return an empty object [].
 
-To seed the database with the exercises, exit the python command line `Ctrl+D` and then run the command
-`python3 seeds.py`
-
-Now, you can it in two ways (inside the project directory):
-
-`flask run`
-
-Or:
-
-`python3 run.py`
-
-I'm using the second option since this one has the Debug option turned on and you can just refresh the page when you make a code change, so you don't have to re-run Flask.
-
-You should be able to access it on http://localhost:5000/
+To seed the database with the exercises, exit the python command line `exit()` and then run the command:
+```
+python3 seeds.py
+```
+Run the app:
+```
+flask run
+```
+And access it on http://localhost:5000/
